@@ -35,4 +35,5 @@ public class EmpresaDTO implements Serializable {
 	private String telefone;
 	@NotNull(message = "Informe o tipo de empresa")
 	private TipoEmpresaEnum tipoEmpresa;
+	private Boolean ativo = true;
 }

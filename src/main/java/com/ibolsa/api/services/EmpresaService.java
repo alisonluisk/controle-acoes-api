@@ -26,8 +26,10 @@ public class EmpresaService {
 
 	public Optional<Empresa> findByCnpj(String cnpj){ return repo.findByCnpj(cnpj); }
 	
-	public List<Empresa> findAll() {
-		return repo.findAll();
+	public List<Empresa> findAll(Boolean ativo) {
+		if(ativo == null)
+			return repo.findAll();
+		return repo.findDistinctByAtivo(ativo);
 	}
 
 	public Empresa insert(Empresa empresa) {

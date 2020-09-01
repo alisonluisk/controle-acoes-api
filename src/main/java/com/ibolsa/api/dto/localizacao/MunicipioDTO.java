@@ -13,4 +13,6 @@ public class MunicipioDTO implements Serializable {
 	private Long id;
 	private String nome;
 	private EstadoDTO estado;
+	private String descricao;
+
 }

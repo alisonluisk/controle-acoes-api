@@ -36,4 +36,10 @@ public class Empresa implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private TipoEmpresaEnum tipoEmpresa;
+
+    private boolean ativo = true;
+    
+    public Long getCodigoMunicipio(){
+        return getMunicipio().getId();
+    }
 }

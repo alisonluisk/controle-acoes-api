@@ -21,4 +21,8 @@ public class Municipio {
 
     @ManyToOne
     private Estado estado;
+
+    public String getDescricao(){
+        return String.format("%s-%s", nome, estado.getSigla());
+    }
 }

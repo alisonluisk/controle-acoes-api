@@ -27,8 +27,8 @@ public class EmpresaResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<EmpresaDTO>> findAll() {
-		List<Empresa> list = service.findAll();
+	public ResponseEntity<List<EmpresaDTO>> findAll(@RequestParam(value="ativo", required=false) Boolean ativo) {
+		List<Empresa> list = service.findAll(ativo);
 		return ResponseEntity.ok().body(convertListToDto(list));
 	}
 
