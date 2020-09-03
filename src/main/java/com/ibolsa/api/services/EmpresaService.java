@@ -2,6 +2,7 @@ package com.ibolsa.api.services;
 
 import com.ibolsa.api.domain.empresa.Empresa;
 import com.ibolsa.api.dto.empresa.EmpresaDTO;
+import com.ibolsa.api.enums.TipoEmpresaEnum;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.repositories.EmpresaRepository;
@@ -32,6 +33,10 @@ public class EmpresaService {
 		return repo.findDistinctByAtivo(ativo);
 	}
 
+	public List<Empresa> findByParams(Boolean ativo, TipoEmpresaEnum tipo){
+		return repo.findByParams(ativo, tipo);
+	}
+
 	public Empresa insert(Empresa empresa) {
 		if(findByCnpj(empresa.getCnpj()).isPresent())
 			throw new DataIntegrityException("Cnpj já cadastrado.");
@@ -60,7 +65,13 @@ public class EmpresaService {
 		empresa.setRazaoSocial(dto.getRazaoSocial());
 		empresa.setTelefone(dto.getTelefone());
 		empresa.setTipoEmpresa(dto.getTipoEmpresa());
+		empresa.setQtdAcoes(dto.getQtdAcoes());
+		empresa.setCotasOn(dto.getCotasOn());
+		empresa.setCotasPn(dto.getCotasPn());
 		empresa.setMunicipio(municipioService.find(dto.getCodigoMunicipio()).orElseThrow( () -> new ObjectNotFoundException("Município não encontrado! Código: " + dto.getCodigoMunicipio())));
+		if(dto.getCodigoMatriz() != null)
+			empresa.setMatriz(find(dto.getCodigoMatriz()).orElseThrow( () -> new ObjectNotFoundException("Empresa matriz não encontrada! Código: " + dto.getCodigoMatriz())));
+		else empresa.setMatriz(null);
 
 		return empresa;
 	}

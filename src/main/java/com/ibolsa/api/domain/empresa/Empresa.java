@@ -5,7 +5,6 @@ import com.ibolsa.api.enums.TipoEmpresaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -38,8 +37,19 @@ public class Empresa implements Serializable {
     private TipoEmpresaEnum tipoEmpresa;
 
     private boolean ativo = true;
+
+    private Long qtdAcoes;
+    private Long cotasOn;
+    private Long cotasPn;
+
+    @OneToOne
+    @JoinColumn(name="matriz_id")
+    private Empresa matriz;
     
     public Long getCodigoMunicipio(){
         return getMunicipio().getId();
+    }
+    public Long getCodigoMatriz(){
+        return getMatriz() != null ? getMatriz().getId() : null;
     }
 }

@@ -2,6 +2,7 @@ package com.ibolsa.api.resources.v1;
 
 import com.ibolsa.api.domain.empresa.Empresa;
 import com.ibolsa.api.dto.empresa.EmpresaDTO;
+import com.ibolsa.api.enums.TipoEmpresaEnum;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
 import com.ibolsa.api.services.EmpresaService;
@@ -27,8 +28,9 @@ public class EmpresaResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<EmpresaDTO>> findAll(@RequestParam(value="ativo", required=false) Boolean ativo) {
-		List<Empresa> list = service.findAll(ativo);
+	public ResponseEntity<List<EmpresaDTO>> findAll(@RequestParam(value="ativo", required=false) Boolean ativo,
+													@RequestParam(value="tipoEmpresa", required=false) TipoEmpresaEnum tipoEmpresa) {
+		List<Empresa> list = service.findByParams(ativo, tipoEmpresa);
 		return ResponseEntity.ok().body(convertListToDto(list));
 	}
 

@@ -36,4 +36,10 @@ public class EmpresaDTO implements Serializable {
 	@NotNull(message = "Informe o tipo de empresa")
 	private TipoEmpresaEnum tipoEmpresa;
 	private Boolean ativo = true;
+	private Long qtdAcoes;
+	private Long cotasOn;
+	private Long cotasPn;
+
+	private Long codigoMatriz;
+	private EmpresaDTO matriz;
 }
