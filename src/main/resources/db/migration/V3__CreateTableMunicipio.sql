@@ -9,4 +9,8 @@ CREATE TABLE public.municipio
         REFERENCES public.estado (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
+COMMENT ON TABLE public.municipio IS 'Tabela de Manutenção de Cidade.';
+COMMENT ON COLUMN public.municipio.id IS 'Identificação da Cidade, Código do IBGE.';
+COMMENT ON COLUMN public.municipio.nome IS 'Nome da Cidade.';
+COMMENT ON COLUMN public.municipio.estado_id IS 'Identificação do Estado, Código do IBGE.';

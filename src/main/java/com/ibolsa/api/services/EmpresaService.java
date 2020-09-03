@@ -68,6 +68,7 @@ public class EmpresaService {
 		empresa.setQtdAcoes(dto.getQtdAcoes());
 		empresa.setCotasOn(dto.getCotasOn());
 		empresa.setCotasPn(dto.getCotasPn());
+		empresa.setAtivo(dto.getAtivo());
 		empresa.setMunicipio(municipioService.find(dto.getCodigoMunicipio()).orElseThrow( () -> new ObjectNotFoundException("Município não encontrado! Código: " + dto.getCodigoMunicipio())));
 		if(dto.getCodigoMatriz() != null)
 			empresa.setMatriz(find(dto.getCodigoMatriz()).orElseThrow( () -> new ObjectNotFoundException("Empresa matriz não encontrada! Código: " + dto.getCodigoMatriz())));

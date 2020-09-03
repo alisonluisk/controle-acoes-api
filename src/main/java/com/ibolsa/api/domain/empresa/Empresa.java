@@ -10,10 +10,16 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Audited
+@AuditTable(value = "empresa_log")
 public class Empresa implements Serializable {
 
     @Id
@@ -29,6 +35,7 @@ public class Empresa implements Serializable {
     private String cep;
     private String bairro;
     @ManyToOne
+    @NotAudited
     private Municipio municipio;
     private String email;
     private String telefone;
