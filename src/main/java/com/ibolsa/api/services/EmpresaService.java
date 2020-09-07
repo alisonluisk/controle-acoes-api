@@ -1,11 +1,14 @@
 package com.ibolsa.api.services;
 
 import com.ibolsa.api.domain.empresa.Empresa;
+import com.ibolsa.api.domain.empresa.ParametroEmpresa;
 import com.ibolsa.api.dto.empresa.EmpresaDTO;
+import com.ibolsa.api.dto.empresa.ParametroEmpresaDTO;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.repositories.EmpresaRepository;
+import com.ibolsa.api.repositories.ParametroEmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +23,19 @@ public class EmpresaService {
 
 	@Autowired
 	private MunicipioService municipioService;
+
+	@Autowired
+	private ParametroEmpresaRepository parametroRepository;
 	
 	public Optional<Empresa> find(Long id) {
 		return repo.findById(id);
 	}
 
-	public Optional<Empresa> findByCnpj(String cnpj){ return repo.findByCnpj(cnpj); }
-	
-	public List<Empresa> findAll(Boolean ativo) {
-		if(ativo == null)
-			return repo.findAll();
-		return repo.findDistinctByAtivo(ativo);
+	public Optional<ParametroEmpresa> findParametroEmpresa(Long empresaId){
+		return parametroRepository.findByEmpresaId(empresaId);
 	}
+
+	public Optional<Empresa> findByCnpj(String cnpj){ return repo.findByCnpj(cnpj); }
 
 	public List<Empresa> findByParams(Boolean ativo, TipoEmpresaEnum tipo){
 		return repo.findByParams(ativo, tipo);
@@ -66,8 +70,6 @@ public class EmpresaService {
 		empresa.setTelefone(dto.getTelefone());
 		empresa.setTipoEmpresa(dto.getTipoEmpresa());
 		empresa.setQtdAcoes(dto.getQtdAcoes());
-		empresa.setCotasOn(dto.getCotasOn());
-		empresa.setCotasPn(dto.getCotasPn());
 		empresa.setAtivo(dto.getAtivo());
 		empresa.setMunicipio(municipioService.find(dto.getCodigoMunicipio()).orElseThrow( () -> new ObjectNotFoundException("Município não encontrado! Código: " + dto.getCodigoMunicipio())));
 		if(dto.getCodigoMatriz() != null)
@@ -75,5 +77,16 @@ public class EmpresaService {
 		else empresa.setMatriz(null);
 
 		return empresa;
+	}
+
+	public ParametroEmpresa saveOrUpdateParametros(Empresa empresa, ParametroEmpresaDTO parametroDTO) {
+		ParametroEmpresa parametro = parametroRepository.findByEmpresaId(empresa.getId()).orElse(new ParametroEmpresa());
+		parametro.setCotasOn(parametroDTO.getCotasOn());
+		parametro.setCotasPn(parametroDTO.getCotasPn());
+		parametro.setEmpresa(empresa);
+
+		parametroRepository.save(parametro);
+
+		return parametro;
 	}
 }

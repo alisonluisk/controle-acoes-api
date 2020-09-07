@@ -22,8 +22,8 @@ public class EmpresaDTO implements Serializable {
 	private Date dataAbertura;
 	@NotEmpty(message = "Informe o logradouro")
 	private String logradouro;
-	@NotEmpty(message = "Informe o número")
-	private String numero;
+	@NotNull(message = "Informe o número")
+	private Long numero;
 	private String complemento;
 	private String cep;
 	@NotEmpty(message = "Informe o bairro")
@@ -37,8 +37,6 @@ public class EmpresaDTO implements Serializable {
 	private TipoEmpresaEnum tipoEmpresa;
 	private Boolean ativo = true;
 	private Long qtdAcoes;
-	private Long cotasOn;
-	private Long cotasPn;
 
 	private Long codigoMatriz;
 	private EmpresaDTO matriz;

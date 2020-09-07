@@ -8,7 +8,7 @@ CREATE TABLE public.empresa
     data_abertura date,
     cep          character varying(8),
     logradouro   character varying(255) NOT NULL,
-    numero       character varying(20)  NOT NULL,
+    numero       bigint  NOT NULL,
     complemento  character varying(255),
     bairro       character varying(120) NOT NULL,
     municipio_id bigint,

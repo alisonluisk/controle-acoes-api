@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 
-    @Query("select e from Empresa e where (:ativo is null or e.ativo = :ativo) and (:tipoEmpresa is null or e.tipoEmpresa = :tipoEmpresa)")
+    @Query("select e from Empresa e where (:ativo is null or e.ativo = :ativo) and (:tipoEmpresa is null or e.tipoEmpresa = :tipoEmpresa) order by e.id")
     List<Empresa> findByParams(Boolean ativo, TipoEmpresaEnum tipoEmpresa);
 
     List<Empresa> findDistinctByAtivo(Boolean ativo);

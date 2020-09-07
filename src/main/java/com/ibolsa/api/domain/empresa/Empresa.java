@@ -13,6 +13,7 @@ import java.util.Date;
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @Data
 @NoArgsConstructor
@@ -30,12 +31,12 @@ public class Empresa implements Serializable {
     private String nomeFantasia;
     private Date dataAbertura;
     private String logradouro;
-    private String numero;
+    private Long numero;
     private String complemento;
     private String cep;
     private String bairro;
     @ManyToOne
-    @NotAudited
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Municipio municipio;
     private String email;
     private String telefone;
@@ -46,8 +47,6 @@ public class Empresa implements Serializable {
     private boolean ativo = true;
 
     private Long qtdAcoes;
-    private Long cotasOn;
-    private Long cotasPn;
 
     @OneToOne
     @JoinColumn(name="matriz_id")
