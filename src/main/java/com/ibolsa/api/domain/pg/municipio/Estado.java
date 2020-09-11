@@ -1,5 +1,6 @@
-package com.ibolsa.api.domain.municipio;
+package com.ibolsa.api.domain.pg.municipio;
 
+import com.ibolsa.api.domain.pg.abstracts.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Estado {
+public class Estado  extends BaseEntity {
 
     @Id
     private Long id;

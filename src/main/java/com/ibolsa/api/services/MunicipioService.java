@@ -3,9 +3,9 @@ package com.ibolsa.api.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.ibolsa.api.domain.municipio.Estado;
-import com.ibolsa.api.domain.municipio.Municipio;
-import com.ibolsa.api.repositories.MunicipioRepository;
+import com.ibolsa.api.domain.pg.municipio.Estado;
+import com.ibolsa.api.domain.pg.municipio.Municipio;
+import com.ibolsa.api.repositories.pg.MunicipioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

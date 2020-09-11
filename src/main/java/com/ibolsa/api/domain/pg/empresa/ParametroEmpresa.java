@@ -1,12 +1,9 @@
-package com.ibolsa.api.domain.empresa;
+package com.ibolsa.api.domain.pg.empresa;
 
-import com.ibolsa.api.domain.municipio.Municipio;
+import com.ibolsa.api.domain.pg.abstracts.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.envers.AuditTable;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,9 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Audited
-@AuditTable(value = "parametro_empresa_log")
-public class ParametroEmpresa implements Serializable {
+public class ParametroEmpresa extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

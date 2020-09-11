@@ -1,7 +1,7 @@
 package com.ibolsa.api.resources.v1;
 
-import com.ibolsa.api.domain.empresa.Empresa;
-import com.ibolsa.api.domain.empresa.ParametroEmpresa;
+import com.ibolsa.api.domain.pg.empresa.Empresa;
+import com.ibolsa.api.domain.pg.empresa.ParametroEmpresa;
 import com.ibolsa.api.dto.empresa.EmpresaApiDTO;
 import com.ibolsa.api.dto.empresa.EmpresaDTO;
 import com.ibolsa.api.dto.empresa.ParametroEmpresaDTO;

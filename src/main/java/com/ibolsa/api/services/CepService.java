@@ -1,6 +1,6 @@
 package com.ibolsa.api.services;
 
-import com.ibolsa.api.domain.municipio.Municipio;
+import com.ibolsa.api.domain.pg.municipio.Municipio;
 import com.ibolsa.api.dto.localizacao.CepDTO;
 import com.ibolsa.api.dto.localizacao.MunicipioDTO;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;

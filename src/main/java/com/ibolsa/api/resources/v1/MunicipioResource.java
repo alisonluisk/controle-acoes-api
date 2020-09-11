@@ -1,7 +1,7 @@
 package com.ibolsa.api.resources.v1;
 
-import com.ibolsa.api.domain.municipio.Estado;
-import com.ibolsa.api.domain.municipio.Municipio;
+import com.ibolsa.api.domain.pg.municipio.Estado;
+import com.ibolsa.api.domain.pg.municipio.Municipio;
 import com.ibolsa.api.dto.localizacao.MunicipioDTO;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;

@@ -1,6 +1,7 @@
-package com.ibolsa.api.domain.empresa;
+package com.ibolsa.api.domain.pg.empresa;
 
-import com.ibolsa.api.domain.municipio.Municipio;
+import com.ibolsa.api.domain.pg.abstracts.BaseEntity;
+import com.ibolsa.api.domain.pg.municipio.Municipio;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,18 +11,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.hibernate.envers.AuditTable;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RelationTargetAuditMode;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Audited
-@AuditTable(value = "empresa_log")
-public class Empresa implements Serializable {
+public class Empresa extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +30,6 @@ public class Empresa implements Serializable {
     private String cep;
     private String bairro;
     @ManyToOne
-    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Municipio municipio;
     private String email;
     private String telefone;

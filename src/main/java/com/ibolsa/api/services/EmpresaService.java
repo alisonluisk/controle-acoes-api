@@ -1,14 +1,14 @@
 package com.ibolsa.api.services;
 
-import com.ibolsa.api.domain.empresa.Empresa;
-import com.ibolsa.api.domain.empresa.ParametroEmpresa;
+import com.ibolsa.api.domain.pg.empresa.Empresa;
+import com.ibolsa.api.domain.pg.empresa.ParametroEmpresa;
 import com.ibolsa.api.dto.empresa.EmpresaDTO;
 import com.ibolsa.api.dto.empresa.ParametroEmpresaDTO;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
-import com.ibolsa.api.repositories.EmpresaRepository;
-import com.ibolsa.api.repositories.ParametroEmpresaRepository;
+import com.ibolsa.api.repositories.pg.EmpresaRepository;
+import com.ibolsa.api.repositories.pg.ParametroEmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

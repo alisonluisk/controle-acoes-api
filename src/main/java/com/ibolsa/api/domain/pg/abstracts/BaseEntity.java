@@ -1,4 +1,4 @@
-package com.ibolsa.api.domain.abstracts;
+package com.ibolsa.api.domain.pg.abstracts;
 
 import javax.persistence.*;
 import java.util.Date;

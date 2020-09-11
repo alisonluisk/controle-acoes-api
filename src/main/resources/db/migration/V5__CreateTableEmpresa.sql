@@ -20,6 +20,8 @@ CREATE TABLE public.empresa
     cotas_pn bigint,
     matriz_id bigint,
     ativo boolean NOT NULL DEFAULT True,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     CONSTRAINT empresa_pkey PRIMARY KEY (id),
     CONSTRAINT fk_empresa_municipio_id FOREIGN KEY (municipio_id)
         REFERENCES public.municipio(id) MATCH SIMPLE
