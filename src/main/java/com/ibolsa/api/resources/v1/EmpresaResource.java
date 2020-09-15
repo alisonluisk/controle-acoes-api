@@ -2,12 +2,14 @@ package com.ibolsa.api.resources.v1;
 
 import com.ibolsa.api.domain.pg.empresa.Empresa;
 import com.ibolsa.api.domain.pg.empresa.ParametroEmpresa;
+import com.ibolsa.api.dto.empresa.AcoesEmpresaDTO;
 import com.ibolsa.api.dto.empresa.EmpresaApiDTO;
 import com.ibolsa.api.dto.empresa.EmpresaDTO;
 import com.ibolsa.api.dto.empresa.ParametroEmpresaDTO;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
+import com.ibolsa.api.services.AcoesService;
 import com.ibolsa.api.services.CepService;
 import com.ibolsa.api.services.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class EmpresaResource {
 	private EmpresaService service;
 
 	@Autowired
+	private AcoesService serviceAcoes;
+
+	@Autowired
 	private CepService serviceCep;
 
 	@GetMapping(value="/{id}")
@@ -42,6 +47,12 @@ public class EmpresaResource {
 		return ResponseEntity.ok().body(convertListToDto(list));
 	}
 
+	@GetMapping(value = "empresas_acoes")
+	public ResponseEntity<List<EmpresaDTO>> findAllEmpresasAcoes() {
+		List<Empresa> list = service.findAllEmpresasAcoes();
+		return ResponseEntity.ok().body(convertListToDto(list));
+	}
+
 	@PostMapping
 	public ResponseEntity<EmpresaDTO> create(@Validated @RequestBody EmpresaDTO empresaDTO){
 		Empresa empresa = service.fromDTO(empresaDTO, new Empresa());
@@ -54,6 +65,16 @@ public class EmpresaResource {
 		EmpresaDTO response = service.find(id).map( empresa -> {
 			service.fromDTO(empresaDTO, empresa);
 			return convertToDto(service.update(empresa));
+		}).orElseThrow( () -> new ObjectNotFoundException("Empresa não encontrada! Código: " + id));
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@PostMapping(value = "/{id}/gerar_acoes")
+	public ResponseEntity<EmpresaDTO> create(@Validated @RequestBody AcoesEmpresaDTO dto, @PathVariable Long id){
+		EmpresaDTO response = service.find(id).map( empresa -> {
+			serviceAcoes.gerarAcoes(empresa, dto);
+			return convertToDto(empresa);
 		}).orElseThrow( () -> new ObjectNotFoundException("Empresa não encontrada! Código: " + id));
 
 		return ResponseEntity.ok().body(response);

@@ -41,6 +41,10 @@ public class EmpresaService {
 		return repo.findByParams(ativo, tipo);
 	}
 
+	public List<Empresa> findAllEmpresasAcoes(){
+		return repo.findAllEmpresasAcoes();
+	}
+
 	public Empresa insert(Empresa empresa) {
 		if(findByCnpj(empresa.getCnpj()).isPresent())
 			throw new DataIntegrityException("Cnpj já cadastrado.");
