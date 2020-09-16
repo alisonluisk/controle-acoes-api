@@ -6,6 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@JaversSpringDataAuditable
 public interface LoteAcoesEmpresaRepository extends MongoRepository<Acao, String> {
 }

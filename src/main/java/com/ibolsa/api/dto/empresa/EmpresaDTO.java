@@ -1,6 +1,7 @@
 package com.ibolsa.api.dto.empresa;
 
 import com.ibolsa.api.dto.localizacao.MunicipioDTO;
+import com.ibolsa.api.enums.StatusAcoesEmpresaEnum;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import lombok.Data;
 
@@ -37,7 +38,9 @@ public class EmpresaDTO implements Serializable {
 	private TipoEmpresaEnum tipoEmpresa;
 	private Boolean ativo = true;
 	private Long qtdAcoes;
+	private StatusAcoesEmpresaEnum statusAcoes;
 
 	private Long codigoMatriz;
 	private EmpresaDTO matriz;
+
 }

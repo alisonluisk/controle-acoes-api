@@ -4,6 +4,7 @@ import com.ibolsa.api.domain.pg.empresa.Empresa;
 import com.ibolsa.api.domain.pg.empresa.ParametroEmpresa;
 import com.ibolsa.api.dto.empresa.EmpresaDTO;
 import com.ibolsa.api.dto.empresa.ParametroEmpresaDTO;
+import com.ibolsa.api.enums.StatusAcoesEmpresaEnum;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
@@ -79,6 +80,13 @@ public class EmpresaService {
 		if(dto.getCodigoMatriz() != null)
 			empresa.setMatriz(find(dto.getCodigoMatriz()).orElseThrow( () -> new ObjectNotFoundException("Empresa matriz não encontrada! Código: " + dto.getCodigoMatriz())));
 		else empresa.setMatriz(null);
+
+//		Alteracoes so realizadas quando empresa nova
+		if(empresa.getId() == null){
+			if(empresa.getTipoEmpresa().equals(TipoEmpresaEnum.HOLDING))
+				empresa.setStatusAcoes(StatusAcoesEmpresaEnum.SEM_ACOES);
+			else empresa.setStatusAcoes(StatusAcoesEmpresaEnum.AGUARDANDO);
+		}
 
 		return empresa;
 	}

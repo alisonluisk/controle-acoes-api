@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 public class AcoesEmpresaDTO implements Serializable {
@@ -15,5 +16,5 @@ public class AcoesEmpresaDTO implements Serializable {
     @NotNull(message = "Quantidade de lotes deve ser informado")
     private Long qtdLotes;
     @NotNull(message = "Valor da ação deve ser informado")
-    private Long valorAcao;
+    private BigDecimal valorAcao;
 }

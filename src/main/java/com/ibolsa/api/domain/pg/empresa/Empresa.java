@@ -2,6 +2,7 @@ package com.ibolsa.api.domain.pg.empresa;
 
 import com.ibolsa.api.domain.pg.abstracts.BaseEntity;
 import com.ibolsa.api.domain.pg.municipio.Municipio;
+import com.ibolsa.api.enums.StatusAcoesEmpresaEnum;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,6 +45,9 @@ public class Empresa extends BaseEntity implements Serializable {
     @OneToOne
     @JoinColumn(name="matriz_id")
     private Empresa matriz;
+
+    @Enumerated(EnumType.STRING)
+    private StatusAcoesEmpresaEnum statusAcoes;
     
     public Long getCodigoMunicipio(){
         return getMunicipio().getId();

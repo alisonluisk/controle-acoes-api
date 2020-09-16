@@ -6,6 +6,7 @@ import com.ibolsa.api.dto.empresa.AcoesEmpresaDTO;
 import com.ibolsa.api.dto.empresa.EmpresaApiDTO;
 import com.ibolsa.api.dto.empresa.EmpresaDTO;
 import com.ibolsa.api.dto.empresa.ParametroEmpresaDTO;
+import com.ibolsa.api.enums.StatusAcoesEmpresaEnum;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="/v1/empresas")
@@ -71,13 +74,16 @@ public class EmpresaResource {
 	}
 
 	@PostMapping(value = "/{id}/gerar_acoes")
-	public ResponseEntity<EmpresaDTO> create(@Validated @RequestBody AcoesEmpresaDTO dto, @PathVariable Long id){
-		EmpresaDTO response = service.find(id).map( empresa -> {
+	public ResponseEntity<Map<String, String>> gerarAcoes(@Validated @RequestBody AcoesEmpresaDTO dto, @PathVariable Long id){
+		service.find(id).map( empresa -> {
 			serviceAcoes.gerarAcoes(empresa, dto);
 			return convertToDto(empresa);
 		}).orElseThrow( () -> new ObjectNotFoundException("Empresa não encontrada! Código: " + id));
 
-		return ResponseEntity.ok().body(response);
+		Map<String, String> response = new HashMap<>();
+		response.put("mensagem", "Requisição em processamento");
+		response.put("status", StatusAcoesEmpresaEnum.EM_ANDAMENTO.toString());
+		return ResponseEntity.accepted().body(response);
 	}
 
 	@RequestMapping(value="/{cnpj}/consultar", method=RequestMethod.GET)
