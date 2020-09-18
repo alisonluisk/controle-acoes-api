@@ -1,12 +1,12 @@
 package com.ibolsa.api.services;
 
 import com.ibolsa.api.domain.mongo.acoes.Acao;
+import com.ibolsa.api.domain.mongo.acoes.LoteAcoesEmpresa;
 import com.ibolsa.api.domain.pg.empresa.Empresa;
 import com.ibolsa.api.dto.empresa.AcoesEmpresaDTO;
+import com.ibolsa.api.dto.empresa.ParametroEmpresaDTO;
 import com.ibolsa.api.enums.StatusAcoesEmpresaEnum;
 import com.ibolsa.api.enums.TipoAcaoEnum;
-import com.ibolsa.api.enums.TipoEmpresaEnum;
-import com.ibolsa.api.exceptions.InformacoesInvalidasException;
 import com.ibolsa.api.repositories.mongo.AcaoRepository;
 import com.ibolsa.api.repositories.mongo.LoteAcoesEmpresaRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,16 +38,20 @@ public class AcoesService {
 	@Async("processExecutor")
 	public void gerarAcoes(Empresa empresa, AcoesEmpresaDTO dto){
 		log.info(String.format("Iniciando geração de ações da empresa %s", empresa.getRazaoSocial()));
-		//Validar tipo empresa.
-		if(empresa.getTipoEmpresa().equals(TipoEmpresaEnum.HOLDING))
-			throw new InformacoesInvalidasException("Não é possivel gerar ações para empresas HOLDINGS");
 
 		Date dataInicial = new Date();
-		empresa.setStatusAcoes(StatusAcoesEmpresaEnum.EM_ANDAMENTO);
-		empresaService.update(empresa);
 
 		List<Acao> acoes = getListAcoes(TipoAcaoEnum.PN, empresa, dto.getValorAcao(), dto.getCotasPn(), dto.getQtdLotes());
+		List<String> lotes = new ArrayList<>();
+		acoes.forEach(acao-> { if(!lotes.contains(acao.getLote())) lotes.add(acao.getLote()); });
 		acaoRepo.saveAll(acoes);
+
+		log.info("Ações geradas");
+
+		List<LoteAcoesEmpresa> lotesEmpresa = gerarListLoteAcoesEmpresa(lotes, dto);
+		loteRepo.saveAll(lotesEmpresa);
+
+		log.info("Lotes gerados");
 
 		empresa.setStatusAcoes(StatusAcoesEmpresaEnum.CONCLUIDO);
 		empresaService.update(empresa);
@@ -83,4 +89,25 @@ public class AcoesService {
 		}
 		return acoes;
 	}
+
+	private List<LoteAcoesEmpresa> gerarListLoteAcoesEmpresa(List<String> lotes, AcoesEmpresaDTO dto){
+		List<LoteAcoesEmpresa> lotesEmpresa = new ArrayList<>();
+		Integer qtdLotesCont = 0;
+		for(ParametroEmpresaDTO parametro : dto.getParametroAcoes()){
+			BigDecimal qtdLotesPnEmpresa = new BigDecimal(dto.getQtdLotes()).divide(new BigDecimal("100")).multiply(new BigDecimal(parametro.getCotasPn())).setScale(0, RoundingMode.HALF_UP);
+
+			Integer cont = 0;
+			while(cont < qtdLotesPnEmpresa.intValue()){
+				LoteAcoesEmpresa loteEmpresa = new LoteAcoesEmpresa();
+				loteEmpresa.setEmpresaId(parametro.getEmpresa().getId());
+				loteEmpresa.setVendida(false);
+				loteEmpresa.setLote(lotes.get(qtdLotesCont));
+				lotesEmpresa.add(loteEmpresa);
+				cont ++;
+				qtdLotesCont ++;
+			}
+		}
+		return lotesEmpresa;
+	}
+
 }

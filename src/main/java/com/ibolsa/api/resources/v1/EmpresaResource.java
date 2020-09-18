@@ -8,6 +8,7 @@ import com.ibolsa.api.dto.empresa.EmpresaDTO;
 import com.ibolsa.api.dto.empresa.ParametroEmpresaDTO;
 import com.ibolsa.api.enums.StatusAcoesEmpresaEnum;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
+import com.ibolsa.api.exceptions.InformacoesInvalidasException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
 import com.ibolsa.api.services.AcoesService;
@@ -50,10 +51,16 @@ public class EmpresaResource {
 		return ResponseEntity.ok().body(convertListToDto(list));
 	}
 
-	@GetMapping(value = "empresas_acoes")
+	@GetMapping(value = "/empresas_acoes")
 	public ResponseEntity<List<EmpresaDTO>> findAllEmpresasAcoes() {
 		List<Empresa> list = service.findAllEmpresasAcoes();
 		return ResponseEntity.ok().body(convertListToDto(list));
+	}
+
+	@GetMapping(value = "/parametro_empresas")
+	public ResponseEntity<List<ParametroEmpresaDTO>> findAllEmpresasDividirAcoes() {
+		List<ParametroEmpresa> list = service.findAllParametroEmpresas();
+		return ResponseEntity.ok().body(convertListParametroToDto(list));
 	}
 
 	@PostMapping
@@ -76,6 +83,13 @@ public class EmpresaResource {
 	@PostMapping(value = "/{id}/gerar_acoes")
 	public ResponseEntity<Map<String, String>> gerarAcoes(@Validated @RequestBody AcoesEmpresaDTO dto, @PathVariable Long id){
 		service.find(id).map( empresa -> {
+			//Validar tipo empresa.
+			if(empresa.getTipoEmpresa().equals(TipoEmpresaEnum.HOLDING))
+				throw new InformacoesInvalidasException("Não é possivel gerar ações para empresas HOLDINGS");
+
+			empresa.setStatusAcoes(StatusAcoesEmpresaEnum.EM_ANDAMENTO);
+			service.update(empresa);
+
 			serviceAcoes.gerarAcoes(empresa, dto);
 			return convertToDto(empresa);
 		}).orElseThrow( () -> new ObjectNotFoundException("Empresa não encontrada! Código: " + id));
@@ -124,5 +138,9 @@ public class EmpresaResource {
 
 	private ParametroEmpresaDTO convertParametroDto(ParametroEmpresa parametro){
 		return DozerConverter.parseObject(parametro, ParametroEmpresaDTO.class);
+	}
+
+	private List<ParametroEmpresaDTO> convertListParametroToDto(List<ParametroEmpresa> parametros){
+		return DozerConverter.parseListObjects(parametros, ParametroEmpresaDTO.class);
 	}
 }

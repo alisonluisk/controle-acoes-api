@@ -42,9 +42,9 @@ public class EmpresaService {
 		return repo.findByParams(ativo, tipo);
 	}
 
-	public List<Empresa> findAllEmpresasAcoes(){
-		return repo.findAllEmpresasAcoes();
-	}
+	public List<Empresa> findAllEmpresasAcoes(){ return repo.findAllEmpresasAcoes(); }
+
+	public List<ParametroEmpresa> findAllParametroEmpresas(){ return parametroRepository.findAllParametroEmpresas(); }
 
 	public Empresa insert(Empresa empresa) {
 		if(findByCnpj(empresa.getCnpj()).isPresent())

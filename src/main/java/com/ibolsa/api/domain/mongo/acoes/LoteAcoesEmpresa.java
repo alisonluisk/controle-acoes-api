@@ -17,5 +17,4 @@ public class LoteAcoesEmpresa {
 
     private String lote;
     private Boolean vendida;
-
 }
