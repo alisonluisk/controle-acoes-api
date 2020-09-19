@@ -87,8 +87,8 @@ public class EmpresaResource {
 			if(empresa.getTipoEmpresa().equals(TipoEmpresaEnum.HOLDING))
 				throw new InformacoesInvalidasException("Não é possivel gerar ações para empresas HOLDINGS");
 
-//			empresa.setStatusAcoes(StatusAcoesEmpresaEnum.EM_ANDAMENTO);
-//			service.update(empresa);
+			empresa.setStatusAcoes(StatusAcoesEmpresaEnum.EM_ANDAMENTO);
+			service.update(empresa);
 
 			serviceAcoes.gerarAcoes(empresa, dto);
 			return convertToDto(empresa);
