@@ -69,10 +69,10 @@ public class AcoesService {
 			acao.setValorAcao(dto.getValorAcao());
 			acao.setLote(String.format("PH%s", StringUtils.leftPad(Integer.toString(contAcaoLote), 4, "0")));
 
-			acoes.add(acao);
-
 			if(!lotesStr.contains(acao.getLote()))
 				lotesStr.add(acao.getLote());
+
+			acaoRepo.save(acao);
 
 			if(contAcoes >= qtdAcaoLote.intValue()) {
 				contAcaoLote++;
@@ -82,11 +82,7 @@ public class AcoesService {
 			}
 		}
 
-		List<LoteAcoesEmpresa> lotesEmpresa = gerarListLoteAcoesEmpresa(lotesStr, dto);
-
-		//Salva Listas PN
-		acaoRepo.saveAll(acoes);
-		loteRepo.saveAll(lotesEmpresa);
+		gerarListLoteAcoesEmpresa(lotesStr, dto);
 	}
 
 	private void gerarListasOn(Empresa empresa, AcoesEmpresaDTO dto){
@@ -108,7 +104,8 @@ public class AcoesService {
 				acao.setValorAcao(dto.getValorAcao());
 				acao.setLote(lote);
 
-				acoes.add(acao);
+				acaoRepo.save(acao);
+
 				contAcoes++;
 			}
 			LoteAcoesEmpresa loteEmpresa = new LoteAcoesEmpresa();
@@ -117,13 +114,10 @@ public class AcoesService {
 			loteEmpresa.setLote(lote);
 			loteEmpresa.setTipoLote(TipoAcaoEnum.ON);
 
-			lotes.add(loteEmpresa);
+			loteRepo.save(loteEmpresa);
 
 			contAcaoLote++;
 		}
-		//Salva Listas ON
-		acaoRepo.saveAll(acoes);
-		loteRepo.saveAll(lotes);
 	}
 
 	private List<LoteAcoesEmpresa> gerarListLoteAcoesEmpresa(List<String> lotes, AcoesEmpresaDTO dto){
@@ -139,7 +133,9 @@ public class AcoesService {
 				loteEmpresa.setVendida(false);
 				loteEmpresa.setLote(lotes.get(qtdLotesCont));
 				loteEmpresa.setTipoLote(TipoAcaoEnum.PN);
-				lotesEmpresa.add(loteEmpresa);
+
+				loteRepo.save(loteEmpresa);
+
 				cont ++;
 				qtdLotesCont ++;
 			}
