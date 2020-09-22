@@ -6,6 +6,7 @@ import com.ibolsa.api.enums.StatusAcoesEmpresaEnum;
 import com.ibolsa.api.enums.TipoEmpresaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Empresa extends BaseEntity implements Serializable {
 
     @Id

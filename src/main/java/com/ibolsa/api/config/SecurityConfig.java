@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public CorsConfigurationSource corsConfigurationSource() {
 	    final CorsConfiguration config = new CorsConfiguration();
 	    config.setAllowedOrigins(Arrays.asList("*"));
-	    config.setAllowedMethods(Arrays.asList("*"));
+		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 	    config.setAllowCredentials(true);
 	    config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
 
@@ -79,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	    return configSource;
 	}
-	
+
 //	@Bean
 //	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 //		return new BCryptPasswordEncoder();

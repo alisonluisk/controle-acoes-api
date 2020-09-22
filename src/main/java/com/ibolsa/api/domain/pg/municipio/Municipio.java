@@ -3,6 +3,7 @@ package com.ibolsa.api.domain.pg.municipio;
 import com.ibolsa.api.domain.pg.abstracts.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Municipio extends BaseEntity {
 
     @Id
