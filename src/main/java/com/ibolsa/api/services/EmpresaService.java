@@ -81,8 +81,9 @@ public class EmpresaService {
 			empresa.setMatriz(find(dto.getCodigoMatriz()).orElseThrow( () -> new ObjectNotFoundException("Empresa matriz não encontrada! Código: " + dto.getCodigoMatriz())));
 		else empresa.setMatriz(null);
 
-//		Alteracoes so realizadas quando empresa nova
-		if(empresa.getId() == null){
+//		Seta o tipo somente se status ainda é aguardando ou que não tem acoes
+		if(empresa.getStatusAcoes().equals(StatusAcoesEmpresaEnum.SEM_ACOES) ||
+				empresa.getStatusAcoes().equals(StatusAcoesEmpresaEnum.AGUARDANDO)){
 			if(empresa.getTipoEmpresa().equals(TipoEmpresaEnum.HOLDING))
 				empresa.setStatusAcoes(StatusAcoesEmpresaEnum.SEM_ACOES);
 			else empresa.setStatusAcoes(StatusAcoesEmpresaEnum.AGUARDANDO);
