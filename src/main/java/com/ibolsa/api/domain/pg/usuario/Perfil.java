@@ -22,7 +22,7 @@ public class Perfil extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
+    private String talve;
 
     private String descricao;
 

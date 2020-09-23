@@ -23,6 +23,8 @@ CREATE TABLE public.acionista (
        cpf_conta_banco VARCHAR(11),
        nome_conta_banco VARCHAR(128),
        ativo BOOLEAN NOT NULL,
+       created_at timestamp without time zone NOT NULL,
+       updated_at timestamp without time zone NOT NULL,
        CONSTRAINT acionista_pkey PRIMARY KEY (id),
        CONSTRAINT fk_acionista_municipio_id FOREIGN KEY (municipio_id)
            REFERENCES public.municipio(id) MATCH SIMPLE

@@ -19,7 +19,7 @@ public class AcionistaDTO implements Serializable {
 
 	private Long id;
 
-	private String conta;
+	private Long conta;
 	@NotEmpty(message = "Informe o cpf/cnpj")
 	private String cpfCnpj;
 	@NotEmpty(message = "Informe o nome")

@@ -23,10 +23,12 @@ public class Acionista extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String conta;
+    private Long conta;
     private String cpfCnpj;
 
     private String nome;
+
+    @Column(name = "dt_nascimento")
     private Date dataNascimento;
 
     private String email;

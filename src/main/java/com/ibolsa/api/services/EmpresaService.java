@@ -82,7 +82,7 @@ public class EmpresaService {
 		else empresa.setMatriz(null);
 
 //		Seta o tipo somente se status ainda é aguardando ou que não tem acoes
-		if(empresa.getStatusAcoes().equals(StatusAcoesEmpresaEnum.SEM_ACOES) ||
+		if(empresa.getStatusAcoes() == null || empresa.getStatusAcoes().equals(StatusAcoesEmpresaEnum.SEM_ACOES) ||
 				empresa.getStatusAcoes().equals(StatusAcoesEmpresaEnum.AGUARDANDO)){
 			if(empresa.getTipoEmpresa().equals(TipoEmpresaEnum.HOLDING))
 				empresa.setStatusAcoes(StatusAcoesEmpresaEnum.SEM_ACOES);
