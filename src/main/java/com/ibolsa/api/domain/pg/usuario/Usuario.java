@@ -34,7 +34,7 @@ public class Usuario extends BaseEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="perfil_id")
-    private Perfil perfil;
+    private PerfilUsuario perfilUsuario;
 
     private boolean ativo;
 

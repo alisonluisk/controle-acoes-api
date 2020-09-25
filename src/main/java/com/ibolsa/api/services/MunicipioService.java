@@ -28,7 +28,7 @@ public class MunicipioService {
 	}
 	
 	public List<Municipio> findAllMunicipiosByNome(String nome){	
-		return repoMunicipio.findDistinctByNomeContainingIgnoreCase(nome);
+		return repoMunicipio.findAllByNome(nome);
 	}
 	
 	public List<Municipio> findAllMunicipiosByNomeAndEstado(String nome, Estado estado){	

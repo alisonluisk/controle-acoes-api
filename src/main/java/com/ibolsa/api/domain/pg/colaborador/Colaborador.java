@@ -42,4 +42,8 @@ public class Colaborador extends BaseEntity implements Serializable {
     private Municipio municipio;
     private String complemento;
     private boolean ativo;
+
+    public Long getCodigoMunicipio(){
+        return getMunicipio().getId();
+    }
 }

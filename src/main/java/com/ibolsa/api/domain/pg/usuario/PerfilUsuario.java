@@ -16,13 +16,13 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true)
-public class Perfil extends BaseEntity implements Serializable {
+public class PerfilUsuario extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String talve;
+    private String nome;
 
     private String descricao;
 

@@ -34,9 +34,7 @@ public class AcionistaService {
 		if(findByCpfCnpj(acionista.getCpfCnpj()).isPresent())
 			throw new DataIntegrityException("CPF/CNPJ já cadastrado.");
 
-		//TODO VERIFICAR ISSO
-		//gerar Conta;
-
+		acionista.setConta(repo.getNextConta());
 		return repo.save(acionista);
 	}
 

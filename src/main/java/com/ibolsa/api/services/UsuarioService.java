@@ -1,12 +1,9 @@
 package com.ibolsa.api.services;
 
-import com.ibolsa.api.domain.pg.colaborador.Colaborador;
 import com.ibolsa.api.domain.pg.usuario.Usuario;
-import com.ibolsa.api.dto.colaborador.ColaboradorDTO;
 import com.ibolsa.api.dto.usuario.UsuarioDTO;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
-import com.ibolsa.api.repositories.pg.ColaboradorRepository;
 import com.ibolsa.api.repositories.pg.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +40,7 @@ public class UsuarioService {
 	}
 
 	public Usuario fromDTO(UsuarioDTO dto, Usuario usuario){
-		usuario.setPerfil(perfilService.find(dto.getCodigoPerfil()).orElseThrow( () -> new ObjectNotFoundException("Perfil não encontrado! Código: " + dto.getCodigoPerfil())));
+		usuario.setPerfilUsuario(perfilService.find(dto.getCodigoPerfil()).orElseThrow( () -> new ObjectNotFoundException("Perfil não encontrado! Código: " + dto.getCodigoPerfil())));
 
 		return usuario;
 	}

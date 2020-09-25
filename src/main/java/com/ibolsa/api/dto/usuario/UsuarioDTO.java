@@ -2,7 +2,7 @@ package com.ibolsa.api.dto.usuario;
 
 import com.ibolsa.api.domain.pg.acionista.Acionista;
 import com.ibolsa.api.domain.pg.colaborador.Colaborador;
-import com.ibolsa.api.domain.pg.usuario.Perfil;
+import com.ibolsa.api.domain.pg.usuario.PerfilUsuario;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ public class UsuarioDTO implements Serializable {
     private String usuario;
     @NotNull(message = "Informe o código do perfil")
     private Long codigoPerfil;
-    private Perfil perfil;
+    private PerfilUsuario perfilUsuario;
     private Acionista acionista;
     private Colaborador colaborador;
 

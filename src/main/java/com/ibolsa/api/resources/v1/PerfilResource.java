@@ -1,6 +1,6 @@
 package com.ibolsa.api.resources.v1;
 
-import com.ibolsa.api.domain.pg.usuario.Perfil;
+import com.ibolsa.api.domain.pg.usuario.PerfilUsuario;
 import com.ibolsa.api.dto.usuario.PerfilDTO;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
@@ -26,15 +26,15 @@ public class PerfilResource {
 	
 	@GetMapping
 	public ResponseEntity<List<PerfilDTO>> findAll() {
-		List<Perfil> list = service.findAll();
+		List<PerfilUsuario> list = service.findAll();
 		return ResponseEntity.ok().body(convertListToDto(list));
 	}
 
-	private PerfilDTO convertToDto(Perfil perfil) {
-		return DozerConverter.parseObject(perfil, PerfilDTO.class);
+	private PerfilDTO convertToDto(PerfilUsuario perfilUsuario) {
+		return DozerConverter.parseObject(perfilUsuario, PerfilDTO.class);
 	}
 
-	private List<PerfilDTO> convertListToDto(List<Perfil> perfis){
+	private List<PerfilDTO> convertListToDto(List<PerfilUsuario> perfis){
 		return DozerConverter.parseListObjects(perfis, PerfilDTO.class);
 	}
 }

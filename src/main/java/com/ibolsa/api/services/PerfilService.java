@@ -1,6 +1,6 @@
 package com.ibolsa.api.services;
 
-import com.ibolsa.api.domain.pg.usuario.Perfil;
+import com.ibolsa.api.domain.pg.usuario.PerfilUsuario;
 import com.ibolsa.api.dto.usuario.PerfilDTO;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.repositories.pg.PerfilRepository;
@@ -16,32 +16,32 @@ public class PerfilService {
 	@Autowired
 	private PerfilRepository repo;
 
-	public Optional<Perfil> find(Long id) {
+	public Optional<PerfilUsuario> find(Long id) {
 		return repo.findById(id);
 	}
 
-	public List<Perfil> findAll() {
+	public List<PerfilUsuario> findAll() {
 		return repo.findAll();
 	}
 
-	public Perfil insert(Perfil perfil) {
-		return repo.save(perfil);
+	public PerfilUsuario insert(PerfilUsuario perfilUsuario) {
+		return repo.save(perfilUsuario);
 	}
 
-	public Perfil update(Perfil perfil) {
-		if(perfil == null || perfil.getId() == null)
+	public PerfilUsuario update(PerfilUsuario perfilUsuario) {
+		if(perfilUsuario == null || perfilUsuario.getId() == null)
 			throw new DataIntegrityException("Perfil id não pode ser nulo.");
 
-		return repo.save(perfil);
+		return repo.save(perfilUsuario);
 	}
 
-	public Perfil fromDTO(PerfilDTO dto, Perfil perfil){
-		perfil.setDescricao(dto.getDescricao());
-		perfil.setNome(dto.getNome());
+	public PerfilUsuario fromDTO(PerfilDTO dto, PerfilUsuario perfilUsuario){
+		perfilUsuario.setDescricao(dto.getDescricao());
+		perfilUsuario.setNome(dto.getNome());
 
 		//TODO VERIFICAR ISSO
 //		perfil.setPerfilAcesso(dto.getPerfilAcesso());
 
-		return perfil;
+		return perfilUsuario;
 	}
 }

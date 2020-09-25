@@ -3,6 +3,7 @@ package com.ibolsa.api.repositories.pg;
 import com.ibolsa.api.domain.pg.acionista.Acionista;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,5 +17,9 @@ public interface AcionistaRepository extends JpaRepository<Acionista, Long> {
     List<Acionista> findDistinctByAtivo(Boolean ativo);
 
     Optional<Acionista> findByCpfCnpj(String cpfCnpj);
+
+    @Query("SELECT coalesce(max(d.conta) + 1, 1) as conta "
+            + "FROM Acionista d ")
+    Long getNextConta();
 
 }

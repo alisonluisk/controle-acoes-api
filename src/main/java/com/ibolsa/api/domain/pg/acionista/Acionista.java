@@ -57,4 +57,8 @@ public class Acionista extends BaseEntity implements Serializable {
     private String numeroConta;
     private String cpfContaBanco;
     private String nomeContaBanco;
+
+    public Long getCodigoMunicipio(){
+        return getMunicipio().getId();
+    }
 }
