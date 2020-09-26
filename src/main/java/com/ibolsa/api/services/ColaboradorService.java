@@ -29,6 +29,9 @@ public class ColaboradorService {
 	@Autowired
 	private MunicipioService municipioService;
 
+	@Autowired
+	private UsuarioService usuarioService;
+
 	public Optional<Colaborador> find(Long id) {
 		return repo.findById(id);
 	}
@@ -43,7 +46,11 @@ public class ColaboradorService {
 		if(findByCpf(colaborador.getCpf()).isPresent())
 			throw new DataIntegrityException("CPF já cadastrado.");
 
-		return repo.save(colaborador);
+		repo.save(colaborador);
+
+		usuarioService.createUsuarioByColaborador(colaborador);
+
+		return colaborador;
 	}
 
 	public Colaborador update(Colaborador colaborador) {

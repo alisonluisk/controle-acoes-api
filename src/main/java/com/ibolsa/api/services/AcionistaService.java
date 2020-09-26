@@ -6,6 +6,9 @@ import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.repositories.pg.AcionistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +23,9 @@ public class AcionistaService {
 	@Autowired
 	private MunicipioService municipioService;
 
+	@Autowired
+	private UsuarioService usuarioService;
+
 	public Optional<Acionista> find(Long id) {
 		return repo.findById(id);
 	}
@@ -27,15 +33,25 @@ public class AcionistaService {
 	public Optional<Acionista> findByCpfCnpj(String cpfCnpj){ return repo.findByCpfCnpj(cpfCnpj); }
 
 	public List<Acionista> findAll(Boolean ativo) {
-		return repo.findDistinctByAtivo(ativo);
+		return repo.findByAtivo(ativo);
 	}
+
+	public Page<Acionista> findByParamsPageable(Boolean ativo, int page, int size, String sortColumn, String sortDirection) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortColumn);
+		return repo.findDistinctByAtivo(ativo, pageRequest);
+	}
+
 
 	public Acionista insert(Acionista acionista) {
 		if(findByCpfCnpj(acionista.getCpfCnpj()).isPresent())
 			throw new DataIntegrityException("CPF/CNPJ já cadastrado.");
-
 		acionista.setConta(repo.getNextConta());
-		return repo.save(acionista);
+
+		repo.save(acionista);
+
+		usuarioService.createUsuarioByAcionista(acionista);
+
+		return acionista;
 	}
 
 	public Acionista update(Acionista acionista) {

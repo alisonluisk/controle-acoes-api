@@ -11,6 +11,6 @@ import java.util.List;
 @JaversSpringDataAuditable
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    List<Usuario> findDistinctByAtivo(Boolean ativo);
+    List<Usuario> findDistinctByAtivoAndAcionistaNull(Boolean ativo);
 
 }

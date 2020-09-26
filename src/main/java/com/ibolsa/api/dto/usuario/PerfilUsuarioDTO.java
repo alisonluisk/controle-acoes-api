@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class PerfilDTO implements Serializable {
+public class PerfilUsuarioDTO implements Serializable {
 
     private Long id;
     @NotEmpty(message = "Informe o nome")

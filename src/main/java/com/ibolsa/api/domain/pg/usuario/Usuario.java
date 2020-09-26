@@ -33,9 +33,11 @@ public class Usuario extends BaseEntity implements Serializable {
     private Colaborador colaborador;
 
     @ManyToOne
-    @JoinColumn(name="perfil_id")
+    @JoinColumn(name="perfil_usuario_id")
     private PerfilUsuario perfilUsuario;
 
     private boolean ativo;
+
+    public Long getCodigoPerfilUsuario(){ return getPerfilUsuario() != null ? getPerfilUsuario().getId() : null; }
 
 }

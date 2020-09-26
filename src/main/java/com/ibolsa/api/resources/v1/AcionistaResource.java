@@ -9,6 +9,7 @@ import com.ibolsa.api.helper.DozerConverter;
 import com.ibolsa.api.services.AcionistaService;
 import com.ibolsa.api.services.ColaboradorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +31,18 @@ public class AcionistaResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<AcionistaDTO>> findAll(@RequestParam(value="ativo", required=false) Boolean ativo) {
+	public ResponseEntity<List<AcionistaDTO>> findAll(@RequestParam(value="ativo", required=false, defaultValue = "true") Boolean ativo) {
 		List<Acionista> list = service.findAll(ativo);
 		return ResponseEntity.ok().body(convertListToDto(list));
+	}
+
+	@GetMapping("/pageable")
+	public Page<AcionistaDTO> search(@RequestParam(value="ativo", required=false, defaultValue = "true") Boolean ativo,
+									 @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+									 @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+									 @RequestParam(value = "sortColumn", required = false, defaultValue = "nome") String sortColumn,
+									 @RequestParam(value = "sortDirection", required = false, defaultValue = "asc") String sortDirection) {
+		return toPageObjectDto(service.findByParamsPageable(ativo, page, size, sortColumn, sortDirection));
 	}
 
 	@PostMapping
@@ -59,4 +69,11 @@ public class AcionistaResource {
 	private List<AcionistaDTO> convertListToDto(List<Acionista> acionistas){
 		return DozerConverter.parseListObjects(acionistas, AcionistaDTO.class);
 	}
+
+	public Page<AcionistaDTO> toPageObjectDto(Page<Acionista> objects) {
+		Page<AcionistaDTO> dtos  = objects.map(this::convertToDto);
+		return dtos;
+	}
+
+
 }

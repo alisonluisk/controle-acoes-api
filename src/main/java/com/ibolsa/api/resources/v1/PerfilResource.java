@@ -1,7 +1,7 @@
 package com.ibolsa.api.resources.v1;
 
 import com.ibolsa.api.domain.pg.usuario.PerfilUsuario;
-import com.ibolsa.api.dto.usuario.PerfilDTO;
+import com.ibolsa.api.dto.usuario.PerfilUsuarioDTO;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
 import com.ibolsa.api.services.PerfilService;
@@ -19,22 +19,22 @@ public class PerfilResource {
 	private PerfilService service;
 
 	@GetMapping(value="/{id}")
-	public ResponseEntity<PerfilDTO> show(@PathVariable Long id) {
-		PerfilDTO response = service.find(id).map(this::convertToDto).orElseThrow( () -> new ObjectNotFoundException("Perfil não encontrado! Código: " + id));
+	public ResponseEntity<PerfilUsuarioDTO> show(@PathVariable Long id) {
+		PerfilUsuarioDTO response = service.find(id).map(this::convertToDto).orElseThrow( () -> new ObjectNotFoundException("Perfil não encontrado! Código: " + id));
 		return ResponseEntity.ok().body(response);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<PerfilDTO>> findAll() {
+	public ResponseEntity<List<PerfilUsuarioDTO>> findAll() {
 		List<PerfilUsuario> list = service.findAll();
 		return ResponseEntity.ok().body(convertListToDto(list));
 	}
 
-	private PerfilDTO convertToDto(PerfilUsuario perfilUsuario) {
-		return DozerConverter.parseObject(perfilUsuario, PerfilDTO.class);
+	private PerfilUsuarioDTO convertToDto(PerfilUsuario perfilUsuario) {
+		return DozerConverter.parseObject(perfilUsuario, PerfilUsuarioDTO.class);
 	}
 
-	private List<PerfilDTO> convertListToDto(List<PerfilUsuario> perfis){
-		return DozerConverter.parseListObjects(perfis, PerfilDTO.class);
+	private List<PerfilUsuarioDTO> convertListToDto(List<PerfilUsuario> perfis){
+		return DozerConverter.parseListObjects(perfis, PerfilUsuarioDTO.class);
 	}
 }

@@ -1,7 +1,7 @@
 package com.ibolsa.api.services;
 
 import com.ibolsa.api.domain.pg.usuario.PerfilUsuario;
-import com.ibolsa.api.dto.usuario.PerfilDTO;
+import com.ibolsa.api.dto.usuario.PerfilUsuarioDTO;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.repositories.pg.PerfilRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class PerfilService {
 		return repo.save(perfilUsuario);
 	}
 
-	public PerfilUsuario fromDTO(PerfilDTO dto, PerfilUsuario perfilUsuario){
+	public PerfilUsuario fromDTO(PerfilUsuarioDTO dto, PerfilUsuario perfilUsuario){
 		perfilUsuario.setDescricao(dto.getDescricao());
 		perfilUsuario.setNome(dto.getNome());
 
@@ -43,5 +43,9 @@ public class PerfilService {
 //		perfil.setPerfilAcesso(dto.getPerfilAcesso());
 
 		return perfilUsuario;
+	}
+
+	public PerfilUsuario getPerfilAcionista(){
+		return repo.findByNome("ACIONISTA").get();
 	}
 }
