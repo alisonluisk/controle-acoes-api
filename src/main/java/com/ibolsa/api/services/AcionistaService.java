@@ -1,6 +1,7 @@
 package com.ibolsa.api.services;
 
 import com.ibolsa.api.domain.pg.acionista.Acionista;
+import com.ibolsa.api.domain.pg.colaborador.Colaborador;
 import com.ibolsa.api.dto.acionista.AcionistaDTO;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
@@ -36,11 +37,17 @@ public class AcionistaService {
 		return repo.findByAtivo(ativo);
 	}
 
-	public Page<Acionista> findByParamsPageable(Boolean ativo, int page, int size, String sortColumn, String sortDirection) {
+	public Page<Acionista> findByParamsPageable(Boolean ativo, String search, int page, int size, String sortColumn, String sortDirection) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortColumn);
-		return repo.findDistinctByAtivo(ativo, pageRequest);
+		return repo.findByParamsPageable(ativo, search, pageRequest);
 	}
 
+
+	public void desativarAtivarAcionista(Acionista acionista, boolean ativar) {
+		acionista.setAtivo(ativar);
+		repo.save(acionista);
+		usuarioService.desativarAtivarUsuarioAcionista(acionista, ativar);
+	}
 
 	public Acionista insert(Acionista acionista) {
 		if(findByCpfCnpj(acionista.getCpfCnpj()).isPresent())

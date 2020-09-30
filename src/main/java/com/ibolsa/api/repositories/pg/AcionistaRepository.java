@@ -26,4 +26,10 @@ public interface AcionistaRepository extends JpaRepository<Acionista, Long> {
 
     Page<Acionista> findDistinctByAtivo(Boolean ativo, Pageable pageable);
 
+    @Query("SELECT d "
+            + "FROM Acionista d "
+            + "LEFT JOIN Municipio municipio on municipio = d.municipio "
+            + "WHERE (:search is null or (CAST(d.conta as string) like CONCAT('%',lower(:search),'%') or lower(d.cpfCnpj) like CONCAT('%',lower(:search),'%') or lower(d.nome) like CONCAT('%',lower(:search),'%') or lower(municipio.nome) like CONCAT('%',lower(:search),'%'))) "
+            + "  AND (:ativo is null or d.ativo = :ativo) ")
+    Page<Acionista> findByParamsPageable(Boolean ativo, String search, Pageable pageable);
 }

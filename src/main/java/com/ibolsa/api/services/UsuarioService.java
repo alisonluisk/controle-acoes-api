@@ -42,6 +42,24 @@ public class UsuarioService {
 		return repo.save(usuario);
 	}
 
+	public void desativarAtivarUsuarioColaborador(Colaborador colaborador, boolean ativar){
+		Optional<Usuario> user = repo.findByColaborador(colaborador);
+		if(user.isPresent()){
+			Usuario usuario = user.get();
+			usuario.setAtivo(ativar);
+			repo.save(usuario);
+		}
+	}
+
+	public void desativarAtivarUsuarioAcionista(Acionista acionista, boolean ativar){
+		Optional<Usuario> user = repo.findByAcionista(acionista);
+		if(user.isPresent()){
+			Usuario usuario = user.get();
+			usuario.setAtivo(ativar);
+			repo.save(usuario);
+		}
+	}
+
 	public Usuario fromDTO(UsuarioDTO dto, Usuario usuario){
 		usuario.setPerfilUsuario(perfilService.find(dto.getCodigoPerfilUsuario()).orElseThrow( () -> new ObjectNotFoundException("Perfil não encontrado! Código: " + dto.getCodigoPerfilUsuario())));
 

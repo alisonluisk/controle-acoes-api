@@ -38,11 +38,22 @@ public class AcionistaResource {
 
 	@GetMapping("/pageable")
 	public Page<AcionistaDTO> search(@RequestParam(value="ativo", required=false, defaultValue = "true") Boolean ativo,
+									 @RequestParam(value="search", required = false) String searchString,
 									 @RequestParam(value = "page", required = false, defaultValue = "0") int page,
 									 @RequestParam(value = "size", required = false, defaultValue = "10") int size,
 									 @RequestParam(value = "sortColumn", required = false, defaultValue = "nome") String sortColumn,
 									 @RequestParam(value = "sortDirection", required = false, defaultValue = "asc") String sortDirection) {
-		return toPageObjectDto(service.findByParamsPageable(ativo, page, size, sortColumn, sortDirection));
+		return toPageObjectDto(service.findByParamsPageable(ativo, searchString, page, size, sortColumn, sortDirection));
+	}
+
+	@PutMapping(value="/{id}/set_ativo")
+	public ResponseEntity<AcionistaDTO> setAtivo(@Valid @RequestBody Boolean ativo, @PathVariable Long id) {
+		AcionistaDTO response = service.find(id).map( acionista -> {
+			service.desativarAtivarAcionista(acionista, ativo);
+			return convertToDto(acionista);
+		}).orElseThrow( () -> new ObjectNotFoundException("Acionista não encontrado! Código: " + id));
+
+		return ResponseEntity.ok().body(response);
 	}
 
 	@PostMapping

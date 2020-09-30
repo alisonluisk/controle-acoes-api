@@ -1,5 +1,6 @@
 package com.ibolsa.api.services;
 
+import com.ibolsa.api.domain.pg.acionista.Acionista;
 import com.ibolsa.api.domain.pg.colaborador.Colaborador;
 import com.ibolsa.api.domain.pg.municipio.Municipio;
 import com.ibolsa.api.dto.colaborador.ColaboradorDTO;
@@ -11,6 +12,9 @@ import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.repositories.pg.ColaboradorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EnumType;
@@ -40,6 +44,17 @@ public class ColaboradorService {
 
 	public List<Colaborador> findAll(Boolean ativo) {
 		return repo.findDistinctByAtivo(ativo);
+	}
+
+	public Page<Colaborador> findByParamsPageable(Boolean ativo, String search, int page, int size, String sortColumn, String sortDirection) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortColumn);
+		return repo.findByParamsPageable(ativo, search, pageRequest);
+	}
+
+	public void desativarAtivarColaborador(Colaborador colaborador, boolean ativar) {
+		colaborador.setAtivo(ativar);
+		repo.save(colaborador);
+		usuarioService.desativarAtivarUsuarioColaborador(colaborador, ativar);
 	}
 
 	public Colaborador insert(Colaborador colaborador) {
