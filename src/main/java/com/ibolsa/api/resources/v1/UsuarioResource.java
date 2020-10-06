@@ -1,6 +1,8 @@
 package com.ibolsa.api.resources.v1;
 
 import com.ibolsa.api.domain.pg.colaborador.Colaborador;
+import com.ibolsa.api.domain.pg.usuario.AlterarSenhaDTO;
+import com.ibolsa.api.domain.pg.usuario.DefinirSenhaDTO;
 import com.ibolsa.api.domain.pg.usuario.Usuario;
 import com.ibolsa.api.dto.colaborador.ColaboradorDTO;
 import com.ibolsa.api.dto.usuario.UsuarioDTO;
@@ -41,6 +43,20 @@ public class UsuarioResource {
 			service.fromDTO(usuarioDTO, usuario);
 			return convertToDto(service.update(usuario));
 		}).orElseThrow( () -> new ObjectNotFoundException("Usuário não encontrado! Código: " + id));
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@PutMapping(value="/{id}/alterar_senha")
+	public ResponseEntity<UsuarioDTO> alterarSenha(@Valid @RequestBody AlterarSenhaDTO objDto, @PathVariable Long id) {
+		UsuarioDTO response = service.find(id).map( usuario -> convertToDto(service.alterarSenha(objDto, usuario))).orElseThrow( () -> new ObjectNotFoundException("Usuário não encontrado! Código: " + id));
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@PutMapping(value="/{id}/definirSenha")
+	public ResponseEntity<UsuarioDTO> definirSenha(@Valid @RequestBody DefinirSenhaDTO objDto, @PathVariable Long id) {
+		UsuarioDTO response = service.find(id).map( usuario -> convertToDto(service.definirSenha(objDto, usuario))).orElseThrow( () -> new ObjectNotFoundException("Usuário não encontrado! Código: " + id));
 
 		return ResponseEntity.ok().body(response);
 	}

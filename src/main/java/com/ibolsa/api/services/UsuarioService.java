@@ -2,13 +2,16 @@ package com.ibolsa.api.services;
 
 import com.ibolsa.api.domain.pg.acionista.Acionista;
 import com.ibolsa.api.domain.pg.colaborador.Colaborador;
+import com.ibolsa.api.domain.pg.usuario.AlterarSenhaDTO;
+import com.ibolsa.api.domain.pg.usuario.DefinirSenhaDTO;
 import com.ibolsa.api.domain.pg.usuario.Usuario;
 import com.ibolsa.api.dto.usuario.UsuarioDTO;
+import com.ibolsa.api.exceptions.AcessoNegadoException;
 import com.ibolsa.api.exceptions.DataIntegrityException;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.repositories.pg.UsuarioRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +19,10 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
-	
+
+	@Autowired
+	private BCryptPasswordEncoder pe;
+
 	@Autowired
 	private UsuarioRepository repo;
 
@@ -26,6 +32,8 @@ public class UsuarioService {
 	public Optional<Usuario> find(Long id) {
 		return repo.findById(id);
 	}
+
+	public Optional<Usuario> findByEmailColaborador(String email) { return repo.findByEmailColaborador(email); }
 
 	public List<Usuario> findAll(Boolean ativo) {
 		return repo.findDistinctByAtivoAndAcionistaNull(ativo);
@@ -66,7 +74,6 @@ public class UsuarioService {
 		return usuario;
 	}
 
-
 	public void createUsuarioByColaborador(Colaborador colaborador){
 		Usuario usuario = new Usuario();
 		usuario.setColaborador(colaborador);
@@ -91,5 +98,24 @@ public class UsuarioService {
 		if(nomes.length > 1)
 			return String.format("%s.%s", nomes[0].toLowerCase(), nomes[nomes.length-1].toLowerCase());
 		return nome.toLowerCase();
+	}
+
+	public Usuario alterarSenha(AlterarSenhaDTO obj, Usuario usuario) {
+		if(!pe.matches(obj.getSenhaAtual(), usuario.getSenha()))
+			throw new AcessoNegadoException("Senha atual incorreta.");
+
+		usuario.setSenha(pe.encode(obj.getNovaSenha()));
+
+		return repo.save(usuario);
+	}
+
+	public Usuario definirSenha(DefinirSenhaDTO obj, Usuario usuario) {
+		if(usuario.isSenhaConfigurada())
+			throw new AcessoNegadoException("Senha já foi definida.");
+
+		usuario.setSenha(pe.encode(obj.getSenha()));
+		usuario.setSenhaConfigurada(true);
+
+		return repo.save(usuario);
 	}
 }

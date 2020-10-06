@@ -24,6 +24,10 @@ public class Usuario extends BaseEntity implements Serializable {
 
     private String usuario;
 
+    private String senha;
+
+    private boolean senhaConfigurada = false;
+
     @ManyToOne
     @JoinColumn(name="acionista_id")
     private Acionista acionista;

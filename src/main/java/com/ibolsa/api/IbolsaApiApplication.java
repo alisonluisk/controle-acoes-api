@@ -1,5 +1,6 @@
 package com.ibolsa.api;
 
+import com.ibolsa.api.domain.pg.colaborador.Colaborador;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -32,6 +33,8 @@ public class IbolsaApiApplication {
     }
 
     public static void main(String[] args) {
+
+
         SpringApplication.run(IbolsaApiApplication.class, args);
     }
 

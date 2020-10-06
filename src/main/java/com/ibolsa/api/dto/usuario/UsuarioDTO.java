@@ -18,6 +18,8 @@ public class UsuarioDTO implements Serializable {
     private Acionista acionista;
     private Colaborador colaborador;
 
+    private boolean senhaConfigurada;
+
 //    private String nomePerfil;
 
 //    private Set<Integer> perfilAcesso;
