@@ -110,9 +110,6 @@ public class UsuarioService {
 	}
 
 	public Usuario definirSenha(DefinirSenhaDTO obj, Usuario usuario) {
-		if(usuario.isSenhaConfigurada())
-			throw new AcessoNegadoException("Senha já foi definida.");
-
 		usuario.setSenha(pe.encode(obj.getSenha()));
 		usuario.setSenhaConfigurada(true);
 

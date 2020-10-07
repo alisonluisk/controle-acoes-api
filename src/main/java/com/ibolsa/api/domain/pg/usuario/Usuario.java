@@ -3,6 +3,9 @@ package com.ibolsa.api.domain.pg.usuario;
 import com.ibolsa.api.domain.pg.abstracts.BaseEntity;
 import com.ibolsa.api.domain.pg.acionista.Acionista;
 import com.ibolsa.api.domain.pg.colaborador.Colaborador;
+import com.ibolsa.api.dto.acionista.AcionistaDTO;
+import com.ibolsa.api.dto.colaborador.ColaboradorDTO;
+import com.ibolsa.api.helper.DozerConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,6 +45,17 @@ public class Usuario extends BaseEntity implements Serializable {
 
     private boolean ativo;
 
+    @Transient
+    private String nome;
+
     public Long getCodigoPerfilUsuario(){ return getPerfilUsuario() != null ? getPerfilUsuario().getId() : null; }
 
+    public void setNomeUsuario(){
+        if(getAcionista() != null) {
+            this.nome = getAcionista().getNome();
+        }
+        if(getColaborador() != null) {
+            this.nome = getColaborador().getNome();
+        }
+    }
 }

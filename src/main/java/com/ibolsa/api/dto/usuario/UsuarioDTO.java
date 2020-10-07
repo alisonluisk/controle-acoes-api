@@ -12,6 +12,7 @@ public class UsuarioDTO implements Serializable {
 
     private Long id;
     private String usuario;
+    private String nome;
     @NotNull(message = "Informe o código do perfil")
     private Long codigoPerfilUsuario;
     private PerfilUsuarioDTO perfilUsuario;
@@ -24,3 +25,4 @@ public class UsuarioDTO implements Serializable {
 
 //    private Set<Integer> perfilAcesso;
 }
+

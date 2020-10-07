@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled=true, securedEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled=true, securedEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
@@ -43,23 +43,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/**").permitAll();
-//		http.cors().and().csrf().disable().authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
+//		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/**").permitAll();
+		http.cors().and().csrf().disable().authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
+//		.and().formLogin().loginProcessingUrl("/v1/login");
 
-//		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil, usuarioService));
-//		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService, usuarioService));
+		JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager(), jwtUtil, usuarioService);
+		filter.setFilterProcessesUrl("/v1/login");
+		http.addFilter(filter);
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService, usuarioService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
-//	@Override
-//	public void configure(AuthenticationManagerBuilder auth) throws Exception{
-//		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-//	}
-
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("a").password("a").roles("USER");
+	public void configure(AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
+
+//	@Override
+//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.inMemoryAuthentication().withUser("a").password("a").roles("USER");
+//	}
 
 //	@Bean
 //	  CorsConfigurationSource corsConfigurationSource() {

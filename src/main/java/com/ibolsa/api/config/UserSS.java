@@ -36,6 +36,9 @@ public class UserSS implements UserDetails {
 
 	@Override
 	public String getUsername() {
+		if(usuario.getColaborador() != null){
+			return usuario.getColaborador().getEmail();
+		}
 		return usuario.getUsuario();
 	}
 
@@ -59,4 +62,7 @@ public class UserSS implements UserDetails {
 		return true;
 	}
 
+	public Usuario getUsuario() {
+		return usuario;
+	}
 }

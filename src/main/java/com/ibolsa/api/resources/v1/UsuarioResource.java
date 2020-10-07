@@ -62,6 +62,7 @@ public class UsuarioResource {
 	}
 
 	private UsuarioDTO convertToDto(Usuario usuario) {
+		usuario.setNomeUsuario();
 		return DozerConverter.parseObject(usuario, UsuarioDTO.class);
 	}
 

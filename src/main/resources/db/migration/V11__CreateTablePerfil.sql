@@ -12,6 +12,8 @@ COMMENT ON COLUMN public.perfil_usuario.id IS 'Identificação do Perfil de Usu�
 COMMENT ON COLUMN public.perfil_usuario.nome IS 'Nome do Perfil';
 COMMENT ON COLUMN public.perfil_usuario.descricao IS 'Descrição do Perfil - Apontar o que pode ser acessado. Resumo.';
 
-insert into perfil_usuario (nome, descricao, created_at, updated_at) values('ADMINISTRADOR', 'Administrador', current_timestamp, current_timestamp);
-insert into perfil_usuario (nome, descricao, created_at, updated_at) values('ACIONISTA', 'Acionista', current_timestamp, current_timestamp);
+insert into perfil_usuario (nome, descricao, created_at, updated_at) values('Administrador', 'Administrador', current_timestamp, current_timestamp);
+insert into perfil_usuario (nome, descricao, created_at, updated_at) values('Auxiliar Administrativo', 'Auxiliar administrativo', current_timestamp, current_timestamp);
+insert into perfil_usuario (nome, descricao, created_at, updated_at) values('Gerente de Contas', 'Auxiliar administrativo', current_timestamp, current_timestamp);
+insert into perfil_usuario (nome, descricao, created_at, updated_at) values('Acionista', 'Acionista', current_timestamp, current_timestamp);
 
