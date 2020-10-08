@@ -1,4 +1,4 @@
-package com.ibolsa.api.domain.pg.usuario;
+package com.ibolsa.api.dto.usuario;
 
 import lombok.Builder;
 import lombok.Getter;

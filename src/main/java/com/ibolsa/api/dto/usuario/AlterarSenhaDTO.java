@@ -1,4 +1,4 @@
-package com.ibolsa.api.domain.pg.usuario;
+package com.ibolsa.api.dto.usuario;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,13 +14,13 @@ public class AlterarSenhaDTO {
 
 	@NotEmpty(message = "Informe a senha atual")
 	private String senhaAtual;
-	
-	@NotEmpty(message = "Informe a nova senha")
-	private String novaSenha;
+
+	@NotEmpty(message = "Informe a senha")
+	private String senha;
 
 	public AlterarSenhaDTO(String senhaAtual, String novaSenha) {
 		super();
 		this.senhaAtual = senhaAtual;
-		this.novaSenha = novaSenha;
+		this.senha = novaSenha;
 	}
 }

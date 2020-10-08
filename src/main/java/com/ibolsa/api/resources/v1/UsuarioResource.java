@@ -1,18 +1,14 @@
 package com.ibolsa.api.resources.v1;
 
-import com.ibolsa.api.domain.pg.colaborador.Colaborador;
-import com.ibolsa.api.domain.pg.usuario.AlterarSenhaDTO;
-import com.ibolsa.api.domain.pg.usuario.DefinirSenhaDTO;
+import com.ibolsa.api.dto.usuario.AlterarSenhaDTO;
+import com.ibolsa.api.dto.usuario.DefinirSenhaDTO;
 import com.ibolsa.api.domain.pg.usuario.Usuario;
-import com.ibolsa.api.dto.colaborador.ColaboradorDTO;
 import com.ibolsa.api.dto.usuario.UsuarioDTO;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
-import com.ibolsa.api.services.ColaboradorService;
 import com.ibolsa.api.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

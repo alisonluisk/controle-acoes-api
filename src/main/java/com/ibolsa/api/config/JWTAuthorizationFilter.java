@@ -49,7 +49,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 				}
 
 			}else {
-				chain.doFilter(request, response);
+				onUnsuccessfulAuthentication(request, response,new AuthorizationException("Token inválido ou vencido"));
+//				chain.doFilter(request, response);
 			}						
 		}catch(RuntimeException re) {
 			onUnsuccessfulAuthentication(request, response,new AcessoNegadoException(re.getMessage()));

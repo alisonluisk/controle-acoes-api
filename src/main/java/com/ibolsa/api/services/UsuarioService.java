@@ -2,8 +2,8 @@ package com.ibolsa.api.services;
 
 import com.ibolsa.api.domain.pg.acionista.Acionista;
 import com.ibolsa.api.domain.pg.colaborador.Colaborador;
-import com.ibolsa.api.domain.pg.usuario.AlterarSenhaDTO;
-import com.ibolsa.api.domain.pg.usuario.DefinirSenhaDTO;
+import com.ibolsa.api.dto.usuario.AlterarSenhaDTO;
+import com.ibolsa.api.dto.usuario.DefinirSenhaDTO;
 import com.ibolsa.api.domain.pg.usuario.Usuario;
 import com.ibolsa.api.dto.usuario.UsuarioDTO;
 import com.ibolsa.api.exceptions.AcessoNegadoException;
@@ -104,7 +104,7 @@ public class UsuarioService {
 		if(!pe.matches(obj.getSenhaAtual(), usuario.getSenha()))
 			throw new AcessoNegadoException("Senha atual incorreta.");
 
-		usuario.setSenha(pe.encode(obj.getNovaSenha()));
+		usuario.setSenha(pe.encode(obj.getSenha()));
 
 		return repo.save(usuario);
 	}

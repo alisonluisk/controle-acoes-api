@@ -22,10 +22,6 @@ public class LoginDTO implements Serializable {
 	private String usuario;
 
 	private String nome;
-
-	private AcionistaDTO acionista;
-	
-	private ColaboradorDTO colaborador;
 	
 	public LoginDTO(Usuario usuario) {
 		super();
@@ -33,11 +29,9 @@ public class LoginDTO implements Serializable {
 		this.usuario = usuario.getUsuario();
 
 		if(usuario.getAcionista() != null) {
-			this.acionista = DozerConverter.parseObject(usuario.getAcionista(), AcionistaDTO.class);
 			this.nome = usuario.getAcionista().getNome();
 		}
 		if(usuario.getColaborador() != null) {
-			this.colaborador = DozerConverter.parseObject(usuario.getColaborador(), ColaboradorDTO.class);
 			this.nome = usuario.getColaborador().getNome();
 		}
 	}
