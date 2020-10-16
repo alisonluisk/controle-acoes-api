@@ -1,15 +1,20 @@
 package com.ibolsa.api.resources.v1;
 
 import com.ibolsa.api.domain.pg.municipio.Estado;
+import com.ibolsa.api.domain.pg.usuario.PerfilUsuario;
 import com.ibolsa.api.dto.localizacao.EstadoDTO;
+import com.ibolsa.api.enums.RoleEnum;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
 import com.ibolsa.api.services.EstadoService;
+import com.ibolsa.api.services.PerfilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value="/v1/estados")
@@ -17,7 +22,7 @@ public class EstadoResource {
 	
 	@Autowired
 	private EstadoService service;
-	
+
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<EstadoDTO> show(@PathVariable Long id) {
 		EstadoDTO response = service.find(id).map(this::convertToDto).orElseThrow( () -> new ObjectNotFoundException("Estado não encontrado! Código: " + id));
@@ -29,10 +34,11 @@ public class EstadoResource {
 		EstadoDTO response = service.findBySigla(sigla).map(this::convertToDto).orElseThrow( () -> new ObjectNotFoundException("Estado não encontrado! Sigla: " + sigla));
 		return ResponseEntity.ok().body(response);
 	}
-	
+
+//	@PreAuthorize("hasAnyRole('ESTADO_READ')")
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<EstadoDTO>> findAll() {
-		List<Estado> list = service.findAll();  
+		List<Estado> list = service.findAll();
 		return ResponseEntity.ok().body(convertListToDto(list));
 	}
 	

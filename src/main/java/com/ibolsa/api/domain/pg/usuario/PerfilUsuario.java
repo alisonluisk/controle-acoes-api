@@ -1,6 +1,7 @@
 package com.ibolsa.api.domain.pg.usuario;
 
 import com.ibolsa.api.domain.pg.abstracts.BaseEntity;
+import com.ibolsa.api.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +28,8 @@ public class PerfilUsuario extends BaseEntity implements Serializable {
 
     private String descricao;
 
-//    @ElementCollection(fetch=FetchType.EAGER)
-//    @CollectionTable(name="perfil_acesso")
-//    private Set<Integer> perfilAcesso = new HashSet<>();
+    @ElementCollection(targetClass = RoleEnum.class, fetch = FetchType.EAGER)
+    @CollectionTable
+    @Enumerated(EnumType.STRING)
+    Collection<RoleEnum> acessos;
 }

@@ -11,6 +11,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.ibolsa.api.repositories.pg")
@@ -19,6 +25,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class IbolsaApiApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(IbolsaApiApplication.class);
+
+//    @PostConstruct
+//    public void init(){
+//        // Setting Spring Boot SetTimeZone
+//        TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
+//    }
 
     @Bean(name="processExecutor")
     public TaskExecutor workExecutor() {
@@ -33,9 +45,24 @@ public class IbolsaApiApplication {
     }
 
     public static void main(String[] args) {
-
-
         SpringApplication.run(IbolsaApiApplication.class, args);
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("DELETE");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 }

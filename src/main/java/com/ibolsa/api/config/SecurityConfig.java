@@ -1,17 +1,16 @@
 package com.ibolsa.api.config;
 
-import com.ibolsa.api.services.UsuarioService;
+import com.ibolsa.api.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -25,70 +24,35 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
-	private Environment env;
-	
-	@Autowired
-	private JWTUtil jwtUtil;
+	private UserDetailsServiceImpl userDetailsService;
 
-	@Autowired
-	private UserDetailsService userDetailsService;
-
-	@Autowired
-	private UsuarioService usuarioService;
-
-	private static final String[] PUBLIC_MATCHERS = {};
-	
 	@Override
-	protected void configure(HttpSecurity http) throws Exception{
-		if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
-			http.headers().frameOptions().disable();
-		}
-//		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/**").permitAll();
-		http.cors().and().csrf().disable().authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
-//		.and().formLogin().loginProcessingUrl("/v1/login");
-
-		JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager(), jwtUtil, usuarioService);
-		filter.setFilterProcessesUrl("/v1/login");
-		http.addFilter(filter);
-		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService, usuarioService));
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService);
 	}
 
 	@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
 
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.inMemoryAuthentication().withUser("a").password("a").roles("USER");
-//	}
-
-//	@Bean
-//	  CorsConfigurationSource corsConfigurationSource() {
-//	    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//	    CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
-//	    corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
-//	    source.registerCorsConfiguration("/**", corsConfig);
-//	    return source;
-//	  }
-
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-	    final CorsConfiguration config = new CorsConfiguration();
-	    config.setAllowedOrigins(Arrays.asList("*"));
-		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-	    config.setAllowCredentials(true);
-	    config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-
-	    final UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
-	    configSource.registerCorsConfiguration("/**", config);
-
-	    return configSource;
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
 	}
 
 	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
+		corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
+		source.registerCorsConfiguration("/**", corsConfig);
+		return source;
 	}
 }
