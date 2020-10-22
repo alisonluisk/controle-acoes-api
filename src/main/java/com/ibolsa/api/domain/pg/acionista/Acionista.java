@@ -24,6 +24,7 @@ public class Acionista extends BaseEntity implements Serializable {
     private Long id;
 
     private Long conta;
+
     private String cpfCnpj;
 
     private String nome;
