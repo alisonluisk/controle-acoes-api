@@ -46,6 +46,6 @@ public class PerfilService {
 	}
 
 	public PerfilUsuario getPerfilAcionista(){
-		return repo.findByNome("ACIONISTA").get();
+		return repo.findByNome("Acionista").get();
 	}
 }

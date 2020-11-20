@@ -2,8 +2,10 @@ package com.ibolsa.api.resources.v1;
 
 import com.ibolsa.api.domain.pg.acionista.Acionista;
 import com.ibolsa.api.domain.pg.colaborador.Colaborador;
+import com.ibolsa.api.domain.pg.municipio.Municipio;
 import com.ibolsa.api.dto.acionista.AcionistaDTO;
 import com.ibolsa.api.dto.colaborador.ColaboradorDTO;
+import com.ibolsa.api.dto.localizacao.MunicipioDTO;
 import com.ibolsa.api.exceptions.ObjectNotFoundException;
 import com.ibolsa.api.helper.DozerConverter;
 import com.ibolsa.api.services.AcionistaService;
