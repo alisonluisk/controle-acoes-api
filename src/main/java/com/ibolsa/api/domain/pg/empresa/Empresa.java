@@ -50,6 +50,8 @@ public class Empresa extends BaseEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private StatusAcoesEmpresaEnum statusAcoes;
+
+    private Long codigoFarmacia;
     
     public Long getCodigoMunicipio(){
         return getMunicipio().getId();

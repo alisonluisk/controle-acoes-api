@@ -11,4 +11,6 @@ import java.util.List;
 public interface DadosVendaRepository extends MongoRepository<DadosVenda, String>, DadosVendaRepositoryCustom {
 
     List<DadosVenda> findByCodigoAcionistaOrderByDataVenda(Long codigoAcionista);
+
+    List<DadosVenda> findByCpfCnpjClienteAndCodigoConvenioAndCodigoAcionistaIsNull(String cpfCnpj, Long codigoConvenio);
 }

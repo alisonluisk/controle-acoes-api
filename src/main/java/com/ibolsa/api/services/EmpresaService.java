@@ -57,6 +57,10 @@ public class EmpresaService {
 		if(empresa == null || empresa.getId() == null)
 			throw new DataIntegrityException("Empresa id não pode ser nulo.");
 
+		if(empresa.getCodigoFarmacia() != null && repo.findByCodigoFarmaciaAndIdIsNot(empresa.getCodigoFarmacia(), empresa.getId()).isPresent())
+			throw new DataIntegrityException("Código de farmacia já informado em outra empresa.");
+
+
 		return repo.save(empresa);
 	}
 
@@ -76,6 +80,7 @@ public class EmpresaService {
 		empresa.setTipoEmpresa(dto.getTipoEmpresa());
 		empresa.setQtdAcoes(dto.getQtdAcoes());
 		empresa.setAtivo(dto.getAtivo());
+		empresa.setCodigoFarmacia(dto.getCodigoFarmacia());
 		empresa.setMunicipio(municipioService.find(dto.getCodigoMunicipio()).orElseThrow( () -> new ObjectNotFoundException("Município não encontrado! Código: " + dto.getCodigoMunicipio())));
 		if(dto.getCodigoMatriz() != null)
 			empresa.setMatriz(find(dto.getCodigoMatriz()).orElseThrow( () -> new ObjectNotFoundException("Empresa matriz não encontrada! Código: " + dto.getCodigoMatriz())));

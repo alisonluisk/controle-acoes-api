@@ -25,4 +25,6 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
     List<Empresa> findDistinctByAtivo(Boolean ativo);
 
     Optional<Empresa> findByCnpj(String cnpj);
+
+    Optional<Empresa> findByCodigoFarmaciaAndIdIsNot(Long codigoFarmacia, Long id);
 }

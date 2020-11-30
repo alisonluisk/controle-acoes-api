@@ -39,7 +39,7 @@ public class EmpresaDTO implements Serializable {
 	private Boolean ativo = true;
 	private Long qtdAcoes;
 	private StatusAcoesEmpresaEnum statusAcoes;
-
+	private Long codigoFarmacia;
 	private Long codigoMatriz;
 	private EmpresaDTO matriz;
 
